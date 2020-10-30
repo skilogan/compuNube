@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config|
+	Servers = 3
+  
+	(1..Servers).each do |i|
+		config.vm.define "vagrantVM_#{i}" do |mv|
+			mv.vm.box = "bento/ubuntu-20.04"
+			mv.vm.hostname = "vagrantVM#{i}"
+			mv.vm.network :private_network, ip: "192.168.100.1#{i}"
+			mv.vm.provision "shell", path: "vagrantVM_#{i}.sh"
+			mv.vm.synced_folder "carpetaCompartida", "/home/vagrant/carpetaCompartida"
+			mv.vm.provider "virtualbox" do |v|
+				v.name = "vagrantVM_#{i}"
+				v.memory = 1024
+				v.cpus =1
+			end
+		end
+	end
+end
